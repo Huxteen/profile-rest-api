@@ -4,5 +4,7 @@ from accounts import views
 
 urlpatterns = [
     path('', views.profile, name='profile'),
+    path('hello-view/', views.HelloApiView.as_view()),
+
 ]
    
