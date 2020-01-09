@@ -5,8 +5,11 @@ from accounts import views
 # We use this when we use a viewset
 from rest_framework.routers import DefaultRouter
 
+#For ModelViewSet you dont need to register with a base name
+# Django URLS would automatically figure this out. 
 router = DefaultRouter()
 router.register('hello-viewset', views.HelloViewSet, base_name='hello-viewset')
+router.register('profile', views.UserProfileViewSet)
 
 urlpatterns = [
     path('profile-home', views.profile, name='profile'),

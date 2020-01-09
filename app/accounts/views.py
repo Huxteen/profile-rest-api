@@ -3,8 +3,14 @@ from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
 
 from accounts import serializers
+from accounts import permissions
+
+from accounts.models import (
+    UserProfile
+    )
 
 # Create your views here.
 
@@ -53,8 +59,6 @@ class HelloApiView(APIView):
 
         return Response({'method': 'delete'})
 
-
-
 class HelloViewSet(viewsets.ViewSet):
     """Test API ViewSet."""
 
@@ -84,19 +88,16 @@ class HelloViewSet(viewsets.ViewSet):
     
     def retrieve(self, request, pk=None):
         """ Handle getting an object by its ID."""
-
         return Response({'http_method': 'GET'})
 
 
     def update(self, request, pk=None):
         """ Handle updating an object by its ID."""
-
         return Response({'http_method': 'PUT'})
 
 
     def partial_update(self, request, pk=None):
         """ Handle partial update an object by its ID."""
-
         return Response({'http_method': 'PATCH'})
 
 
@@ -104,11 +105,16 @@ class HelloViewSet(viewsets.ViewSet):
         """ Handle dELETE an object by its ID."""
 
         return Response({'http_method': 'DELETE'})
-           
+          
     
-
-
-
-
 def profile(request):
     pass
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """Handles creating, reading, and updating profiles."""
+
+    serializer_class = serializers.UserProfileSerializer
+    queryset = UserProfile.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.UpdateOwnProfile,)
